@@ -1,0 +1,41 @@
+check for duplicate Meal if dateServed is null!!
+
+allow to flag bad comments, photos
+
+related elements for same location
+
+TODO: handle image delete with service
+imageUploadService.delete(userInstance, true)
+
+display latest menu/meals of day
+->rating
+->nb of people eaten
+->photos
+
+if logged in
+->add meal / rate + photo
+comment on a meal
+
+->my profile view /eaten meals
+
+o1
+-> add meal coffee
+-> add new menu
+
+o2
+allow to add /remove tags
+tagcloud
+
+o3
+display related menus / rating / photos
+
+o4
+awards
+meal added by?
+comments as meal description? comment rating?
+
+o5
+friends have eaten
+
+o6
+profile custom meal/menu layout
