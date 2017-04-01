@@ -1,12 +1,12 @@
 package ch.fritscher.campusfood
 
-import grails.plugins.springsecurity.Secured
+import grails.plugin.springsecurity.annotation.Secured
 
 class MenuController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-    def index = {
+    def index() {
         redirect(action: "list", params: params)
     }
 
@@ -16,7 +16,7 @@ class MenuController {
     }
 
 	@Secured(['ROLE_USER'])
-    def create = {
+    def create() {
         if(params.id){
 			def menuInstance = new Menu()
 	        menuInstance.properties = params
@@ -27,7 +27,7 @@ class MenuController {
     }
 
 	@Secured(['ROLE_USER'])
-    def save = {
+    def save() {
         def menuInstance = new Menu(params)
         if (menuInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'menu.label', default: 'Menu'), menuInstance])}"
@@ -38,7 +38,7 @@ class MenuController {
         }
     }
 
-    def show = {
+    def show() {
         def menuInstance = Menu.get(params.id)
         if (!menuInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'menu.label', default: 'Menu'), params.id])}"
@@ -50,7 +50,7 @@ class MenuController {
     }
 
 	@Secured(['ROLE_ADMIN'])
-    def edit = {
+    def edit() {
         def menuInstance = Menu.get(params.id)
         if (!menuInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'menu.label', default: 'Menu'), params.id])}"
@@ -62,7 +62,7 @@ class MenuController {
     }
 
 	@Secured(['ROLE_ADMIN'])
-    def update = {
+    def update() {
         def menuInstance = Menu.get(params.id)
         if (menuInstance) {
             if (params.version) {
@@ -90,7 +90,7 @@ class MenuController {
     }
 
 	@Secured(['ROLE_ADMIN'])
-    def delete = {
+    def delete() {
         def menuInstance = Menu.get(params.id)
         if (menuInstance) {
             try {

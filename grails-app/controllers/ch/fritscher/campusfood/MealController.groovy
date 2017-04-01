@@ -1,6 +1,6 @@
 package ch.fritscher.campusfood
 
-import grails.plugins.springsecurity.Secured
+import grails.plugin.springsecurity.annotation.Secured
 
 class MealController {
 
@@ -10,17 +10,17 @@ class MealController {
 	 def menuService
 	 def imageUploadService
 	 
-	 def index = {
+	 def index() {
 		 redirect(action: "list", params: params)
 	 }
  
-	 def list = {
+	 def list() {
 		 params.max = Math.min(params.max ? params.int('max') : 10, 100)
 		 [mealInstanceList: Meal.list(params), mealInstanceTotal: Meal.count()]
 	 }
  
 	 @Secured(['ROLE_USER'])
-	 def create = {
+	 def create() {
 		 if(params.id){
 			 def mealInstance = new Meal()
 			 mealInstance.properties = params
@@ -31,7 +31,7 @@ class MealController {
 	 }
  
 	 @Secured(['ROLE_USER'])
-	 def save = {
+	 def save() {
 		 def mealInstance = new Meal(params)
 		 if (mealInstance.save(flush: true)) {
 			 flash.message = "${message(code: 'default.created.message', args: [message(code: 'meal.label', default: 'Meal'), mealInstance])}"
@@ -42,7 +42,7 @@ class MealController {
 		 }
 	 }
  
-	 def show = {
+	 def show() {
 		 def mealInstance = Meal.get(params.id)
 		 if (!mealInstance) {
 			 flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'meal.label', default: 'Meal'), params.id])}"
@@ -58,7 +58,7 @@ class MealController {
 	 }
  
 	 @Secured(['ROLE_ADMIN'])
-	 def edit = {
+	 def edit() {
 		 def mealInstance = Meal.get(params.id)
 		 if (!mealInstance) {
 			 flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'meal.label', default: 'Meal'), params.id])}"
@@ -70,7 +70,7 @@ class MealController {
 	 }
  
 	 @Secured(['ROLE_ADMIN'])
-	 def update = {
+	 def update() {
 		 def mealInstance = Meal.get(params.id)
 		 if (mealInstance) {
 			 if (params.version) {
@@ -98,7 +98,7 @@ class MealController {
 	 }
  
 	 @Secured(['ROLE_ADMIN'])
-	 def delete = {
+	 def delete() {
 		 def mealInstance = Meal.get(params.id)
 		 if (mealInstance) {
 			 try {
@@ -118,7 +118,7 @@ class MealController {
 	 }
 	 
 	 @Secured(['ROLE_USER'])
-	 def consume = {
+	 def consume() {
 		 println params
 		 UserMeal userMeal = new UserMeal()
 		 userMeal.properties = params
@@ -128,7 +128,7 @@ class MealController {
 	 }
 	 
 	 @Secured(['ROLE_USER'])
-	 def savePhoto = {
+	 def savePhoto() {
 		 Photo.withTransaction { status ->
 			 Photo photo = new Photo()
 			 photo.properties = params
@@ -153,7 +153,7 @@ class MealController {
 	 }
 	 
 	 @Secured(['ROLE_USER'])
-	 def saveComment = {
+	 def saveComment() {
 		 def commentInstance = new Comment(params)
 		 commentInstance.user = springSecurityService.currentUser
 		 //TODO: error handling?
@@ -161,7 +161,7 @@ class MealController {
 		 redirect(action: "show", id: params.meal.id)
 	 }
 	 
-	 def date = {		 
+	 def date() {
 		 def day
 		 if(params.id){
 			day = Date.parse("dd-MM-yyyy", params.id)

@@ -7,6 +7,11 @@ class Alert {
 	
     static constraints = {
     }
+
+	static mapping = {
+		id generator: 'sequence', params: [sequence: 'alert_seq']
+	}
+
 	String toString(){
 		return "Alert for ${tag} by ${user}"
 	}

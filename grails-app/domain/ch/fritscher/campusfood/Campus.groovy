@@ -11,6 +11,7 @@ class Campus implements Comparable {
 	}
 	
 	static mapping = {
+		id generator: 'sequence', params: [sequence: 'campus_seq']
 		sort 'name'
 	}
 	

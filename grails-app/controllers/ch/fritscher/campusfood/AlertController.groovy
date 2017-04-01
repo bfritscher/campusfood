@@ -1,6 +1,6 @@
 package ch.fritscher.campusfood
 
-import grails.plugins.springsecurity.Secured
+import grails.plugin.springsecurity.annotation.Secured
 
 class AlertController {
 
@@ -12,18 +12,18 @@ class AlertController {
 	//TODO: check security to limit to useronly
 	
 	@Secured(['ROLE_USER'])
-    def index = {
+    def index() {
         redirect(action: "list", params: params)
     }
 
 	@Secured(['ROLE_USER'])
-    def list = {
+    def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [alertInstanceList: Alert.findAllByUser(springSecurityService.currentUser, params), alertInstanceTotal: Alert.countByUser(springSecurityService.currentUser)]
     }
 
 	@Secured(['ROLE_USER'])
-    def create = {
+    def create() {
         def alertInstance = new Alert()
         alertInstance.properties = params
 		alertInstance.user = springSecurityService.currentUser
@@ -31,7 +31,7 @@ class AlertController {
     }
 
 	@Secured(['ROLE_USER'])
-    def save = {
+    def save() {
         def alertInstance = new Alert(params)
 		alertInstance.user = springSecurityService.currentUser
         if (alertInstance.save(flush: true)) {
@@ -44,7 +44,7 @@ class AlertController {
     }
 
 	@Secured(['ROLE_USER'])
-    def show = {
+    def show() {
         def alertInstance = Alert.get(params.id)
         if (!alertInstance || alertInstance.user != springSecurityService.currentUser) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'alert.label', default: 'Alert'), params.id])}"
@@ -56,7 +56,7 @@ class AlertController {
     }
 
 	@Secured(['ROLE_USER'])
-    def edit = {
+    def edit() {
         def alertInstance = Alert.get(params.id)
         if (!alertInstance || alertInstance.user != springSecurityService.currentUser) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'alert.label', default: 'Alert'), params.id])}"
@@ -68,7 +68,7 @@ class AlertController {
     }
 
 	@Secured(['ROLE_USER'])
-    def update = {
+    def update() {
         def alertInstance = Alert.get(params.id)
         if (alertInstance  && alertInstance.user == springSecurityService.currentUser) {
             if (params.version) {
@@ -96,7 +96,7 @@ class AlertController {
     }
 	
 	@Secured(['ROLE_USER'])
-    def delete = {
+    def delete() {
         def alertInstance = Alert.get(params.id)
         if (alertInstance && alertInstance.user == springSecurityService.currentUser) {
             try {

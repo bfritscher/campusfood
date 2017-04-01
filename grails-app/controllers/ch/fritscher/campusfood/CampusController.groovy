@@ -1,12 +1,12 @@
 package ch.fritscher.campusfood
 
-import grails.plugins.springsecurity.Secured
+import grails.plugin.springsecurity.annotation.Secured
 
 class CampusController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-    def index = {
+    def index() {
         redirect(action: "list", params: params)
     }
 
@@ -16,14 +16,14 @@ class CampusController {
     }
 
 	@Secured(['ROLE_USER'])
-    def create = {
+    def create() {
         def campusInstance = new Campus()
         campusInstance.properties = params
         return [campusInstance: campusInstance]
     }
 
 	@Secured(['ROLE_USER'])
-    def save = {
+    def save() {
         def campusInstance = new Campus(params)
         if (campusInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'campus.label', default: 'Campus'), campusInstance.id])}"
@@ -34,7 +34,7 @@ class CampusController {
         }
     }
 
-    def show = {
+    def show() {
         def campusInstance = Campus.get(params.id)
         if (!campusInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'campus.label', default: 'Campus'), params.id])}"
@@ -46,7 +46,7 @@ class CampusController {
     }
 
 	@Secured(['ROLE_ADMIN'])
-    def edit = {
+    def edit() {
         def campusInstance = Campus.get(params.id)
         if (!campusInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'campus.label', default: 'Campus'), params.id])}"
@@ -58,7 +58,7 @@ class CampusController {
     }
 
 	@Secured(['ROLE_ADMIN'])
-    def update = {
+    def update() {
         def campusInstance = Campus.get(params.id)
         if (campusInstance) {
             if (params.version) {
@@ -86,7 +86,7 @@ class CampusController {
     }
 
 	@Secured(['ROLE_ADMIN'])
-    def delete = {
+    def delete() {
         def campusInstance = Campus.get(params.id)
         if (campusInstance) {
             try {

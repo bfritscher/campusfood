@@ -1,28 +1,28 @@
 package ch.fritscher.campusfood
 
-import grails.plugins.springsecurity.Secured
+import grails.plugin.springsecurity.annotation.Secured
 
 @Secured(['ROLE_ADMIN'])
 class CommentController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-    def index = {
+    def index() {
         redirect(action: "list", params: params)
     }
 
-    def list = {
+    def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [commentInstanceList: Comment.list(params), commentInstanceTotal: Comment.count()]
     }
 
-    def create = {
+    def create() {
         def commentInstance = new Comment()
         commentInstance.properties = params
         return [commentInstance: commentInstance]
     }
 
-    def save = {
+    def save() {
         def commentInstance = new Comment(params)
         if (commentInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'comment.label', default: 'Comment'), commentInstance.id])}"
@@ -33,7 +33,7 @@ class CommentController {
         }
     }
 
-    def show = {
+    def show() {
         def commentInstance = Comment.get(params.id)
         if (!commentInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'comment.label', default: 'Comment'), params.id])}"
@@ -44,7 +44,7 @@ class CommentController {
         }
     }
 
-    def edit = {
+    def edit() {
         def commentInstance = Comment.get(params.id)
         if (!commentInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'comment.label', default: 'Comment'), params.id])}"
@@ -55,7 +55,7 @@ class CommentController {
         }
     }
 
-    def update = {
+    def update() {
         def commentInstance = Comment.get(params.id)
         if (commentInstance) {
             if (params.version) {
@@ -82,7 +82,7 @@ class CommentController {
         }
     }
 
-    def delete = {
+    def delete() {
         def commentInstance = Comment.get(params.id)
         if (commentInstance) {
             try {

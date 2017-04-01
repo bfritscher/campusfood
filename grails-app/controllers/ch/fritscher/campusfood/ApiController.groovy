@@ -1,16 +1,16 @@
 package ch.fritscher.campusfood
 import grails.converters.*
 
-import grails.plugins.springsecurity.Secured
+import grails.plugin.springsecurity.annotation.Secured
 class ApiController {
 	def apiBase = '/campusfood/api/v1'
 	def springSecurityService
 	def googleAnalyticsService
 		
-	def index = {
+	def index() {
 	}
 	
-    def locations = {
+    def locations() {
 		def locations = Location.list()
 		def results = locations.collect{ location ->
 			[id: location.id,
@@ -19,7 +19,7 @@ class ApiController {
 		render results as JSON
 	}
 	
-	def menuForLocation = {
+	def menuForLocation() {
 		def menus = Menu.findAll("from Menu as m WHERE m.menuType = :menuType AND m.location.id = :locationId ORDER BY m.location.name ASC, m.name ASC",
 			[menuType:MenuType.FIXED, locationId: params.long('id')])
 		def results = menus.collect{ menu ->
@@ -29,7 +29,7 @@ class ApiController {
 		render results as JSON
 	}
 	
-	def mealForMenu = {
+	def mealForMenu() {
 		def meals = Meal.findAll("from Meal as m WHERE m.menu.menuType = :menuType AND m.menu.id = :menuId ORDER BY m.menu.location.name ASC, m.menu.name ASC, m.content ASC",
 			[menuType:MenuType.FIXED, menuId: params.long('id')])
 		def results = meals.collect{ meal ->
@@ -39,7 +39,7 @@ class ApiController {
 		render results as JSON
 	}
 	
-	def daily = {
+	def daily() {
 		def day
 		if(params.id){
 		   day = Date.parse("yyyy-MM-dd", params.id)
@@ -60,7 +60,7 @@ class ApiController {
 		render results as JSON
 	}
 	
-	def mealTree = {
+	def mealTree() {
 		def locations = Location.list()
 		def menus =  Menu.findAll("from Menu as m WHERE m.menuType = :menuType ORDER BY m.location.name ASC, m.name ASC", [menuType:MenuType.FIXED])
 		def meals = Meal.findAll("from Meal as m WHERE m.menu.menuType = :menuType ORDER BY m.menu.location.name ASC, m.menu.name ASC, m.content ASC", [menuType:MenuType.FIXED])
@@ -82,7 +82,7 @@ class ApiController {
 	}
 		
 	@Secured(['ROLE_USER'])
-	def profileLastMeals = {
+	def profileLastMeals() {
 		
 		def eatenMeals = UserMeal.findAll("from UserMeal where user.id=:userId ORDER BY dateCreated DESC", [userId: springSecurityService.currentUser.id], [max:10])
 		def results = eatenMeals.collect{ em ->
@@ -99,7 +99,7 @@ class ApiController {
 	
 	//new api
 	
-	def menus = {
+	def menus() {
 		googleAnalyticsService.pageView("$apiBase/menus", "APIv1 menus" )
 		def menus =  Menu.findAll("from Menu as m WHERE m.menuType != :menuType ORDER BY m.location.campus.id ASC, m.location.name ASC, m.name ASC", [menuType:MenuType.FIXED])
 		def locations = menus.collect{it.location} as SortedSet
@@ -119,7 +119,7 @@ class ApiController {
 		render results as JSON
 	}
 	
-	def meals = {
+	def meals() {
 		googleAnalyticsService.pageView("$apiBase/meals", "APIv1 meals" )
 		def day
 		if(params.id){

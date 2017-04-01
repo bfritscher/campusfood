@@ -1,12 +1,12 @@
 package ch.fritscher.campusfood
 
-import grails.plugins.springsecurity.Secured
+import grails.plugin.springsecurity.annotation.Secured
 
 class LocationController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-    def index = {
+    def index() {
         redirect(action: "list", params: params)
     }
 
@@ -16,14 +16,14 @@ class LocationController {
     }
 
 	@Secured(['ROLE_USER'])
-    def create = {
+    def create() {
         def locationInstance = new Location()
         locationInstance.properties = params
         return [locationInstance: locationInstance]
     }
 
 	@Secured(['ROLE_USER'])
-    def save = {
+    def save() {
         def locationInstance = new Location(params)
         if (locationInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'location.label', default: 'Location'), locationInstance.name])}"
@@ -35,7 +35,7 @@ class LocationController {
     }
 
 	
-    def show = {
+    def show() {
         def locationInstance = Location.get(params.id)
         if (!locationInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'location.label', default: 'Location'), params.id])}"
@@ -47,7 +47,7 @@ class LocationController {
     }
 
 	@Secured(['ROLE_ADMIN'])
-    def edit = {
+    def edit() {
         def locationInstance = Location.get(params.id)
         if (!locationInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'location.label', default: 'Location'), params.id])}"
@@ -59,7 +59,7 @@ class LocationController {
     }
 
 	@Secured(['ROLE_ADMIN'])
-    def update = {
+    def update() {
         def locationInstance = Location.get(params.id)
         if (locationInstance) {
             if (params.version) {
@@ -87,7 +87,7 @@ class LocationController {
     }
 
 	@Secured(['ROLE_ADMIN'])
-    def delete = {
+    def delete() {
         def locationInstance = Location.get(params.id)
         if (locationInstance) {
             try {

@@ -2,13 +2,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
     <head>
         <title><g:layoutTitle default="Campus Food" /></title>
-        <link rel="stylesheet" href="${resource(dir:'css',file:'campusfood.css')}" type="text/css"/>
+		<asset:stylesheet src="campusfood.css"/>
         <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
         <script type="text/javascript">
 			var baseURL = '${resource(dir:'/', absolute:true)}';
+            baseURL = baseURL.substring(0, baseURL.length - 7);
         </script>
-        <g:javascript library="jquery" plugin="jquery" />
-        <g:javascript src="campusfood.js" />
+		<asset:javascript src="jquery-2.2.0.min.js"/>
+		<asset:javascript src="jquery-migrate-1.4.1.min.js"/>
+		<asset:javascript src="campusfood.js"/>
         <!--[if !IE 7]>
 		<style type="text/css">
 			#wrap {display:table;height:100%}
@@ -52,7 +54,7 @@
 						<g:link controller="admin">controllers</g:link>
 						</sec:ifAnyGranted>
 						<g:link controller="profile"><sec:username/></g:link>
-						<g:link controller="logout" action="index">Déconnecter</g:link>
+						<g:link controller="logoff">Déconnecter</g:link>
 					</sec:ifLoggedIn>
 					<sec:ifNotLoggedIn>
 						<g:link action='index' controller='register' ><g:message code='spring.security.ui.login.register'/></g:link>

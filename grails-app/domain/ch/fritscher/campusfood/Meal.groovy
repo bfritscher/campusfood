@@ -9,7 +9,6 @@ class Meal {
 	static hasMany = [tags:Tag, photos:Photo, comments:Comment]
 	
     static constraints = {
-		menu()
 		dateServed(nullable:true)
 		content(nullable:true, maxSize: 1000, validator: { val, obj -> 
 			if (obj.dateServed == null && val == null) return ['Content cannot be null'] })
@@ -17,6 +16,7 @@ class Meal {
     }
 	
 	static mapping = {
+		id generator: 'sequence', params: [sequence: 'meal_seq']
 		dateServed type:'date'
 	}
 	

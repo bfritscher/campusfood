@@ -1,8 +1,8 @@
 package ch.fritscher.campusfood
 
-import grails.plugins.springsecurity.Secured
+import grails.plugin.springsecurity.annotation.Secured
 
 @Secured(['ROLE_ADMIN'])
 class UserMealController {
-	static scaffold = true
+	static scaffold = UserMeal
 }

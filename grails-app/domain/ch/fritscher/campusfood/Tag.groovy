@@ -10,6 +10,10 @@ class Tag {
     static constraints = {
 		name blank: false, unique: true
     }
+
+	static mapping = {
+		id generator: 'sequence', params: [sequence: 'tag_seq']
+	}
 	
 	String toString(){
 		return name

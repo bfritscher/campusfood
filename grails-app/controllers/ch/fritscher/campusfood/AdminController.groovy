@@ -1,6 +1,6 @@
 package ch.fritscher.campusfood
 
-import grails.plugins.springsecurity.Secured
+import grails.plugin.springsecurity.annotation.Secured
 
 class AdminController {
 	
@@ -9,10 +9,12 @@ class AdminController {
 	def menuService
 	
 	@Secured(['ROLE_ADMIN'])
-    def index = { }
+    def index() {
+
+	}
 
 	@Secured(['ROLE_ADMIN'])
-    def debug = {
+    def debug() {
        def logtxt = ""
         String property = System.getProperty("java.library.path")
         StringTokenizer parser = new StringTokenizer(property, ":")
@@ -23,30 +25,30 @@ class AdminController {
 
     }
 	
-	def parse = {
+	def parse() {
 		render menuService.parse()
 	}
 	
-	def parseGeo = {
+	def parseGeo() {
 		render menuService.parseGeo(params.week ?: 0)
 	}
 	
-	def parseEpfl = {
+	def parseEpfl() {
 		render menuService.parseEpfl(params.date ? Date.parse('yyyy-MM-dd', params.date) : new Date())
 	}
 	
-	def parseEpflWeek = {
+	def parseEpflWeek() {
 		(0..4).each{
 			render menuService.parseEpfl(new Date() + it)
 		}
 	}
 	
-	def parseCSV = {
+	def parseCSV() {
 		render menuService.parseCSV()
 	}
 	
 	@Secured(['ROLE_ADMIN'])
-	def db = {
+	def db() {
 		org.hsqldb.util.DatabaseManagerSwing.main(new String[0])
 		Thread.sleep 100000
 	}	

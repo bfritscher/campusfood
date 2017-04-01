@@ -4,7 +4,7 @@ package ch.fritscher.campusfood
 enum MenuType {
 	DAILY('Daily'),
 	WEEKLY('Weekly'),
-	FIXED('Fixed'),
+	FIXED('Fixed')
 	
 	String name
 	

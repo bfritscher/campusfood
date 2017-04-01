@@ -1,14 +1,13 @@
 package ch.fritscher.campusfood
-import org.codehaus.groovy.grails.commons.ApplicationHolder
-
 
 class MenuService {
 
     static transactional = true
 	def alertService
+	def grailsApplication
 
 	def parse(){
-		def rss =  new XmlSlurper().parse( "http://www2.unil.ch/menus/rss/menus-du-jour/" )
+		def rss =  new XmlSlurper().parse( "https://www2.unil.ch/menus/rss/menus-du-jour/" )
 		def logtxt = ""
 		rss.channel.item.eachWithIndex{ item, i ->
 			Date dateServed = new Date(item.pubDate.text())
@@ -25,8 +24,8 @@ class MenuService {
 	
 	
 	def parseEpfl(Date dateServed){
-		def url = "http://menus.epfl.ch/cgi-bin/rssMenus?date=${dateServed.format('dd/MM/yyyy')}" 
-		def rss =  new XmlSlurper().parse( url )
+		def url = "https://menus.epfl.ch/cgi-bin/rssMenus?date=${dateServed.format('dd/MM/yyyy')}"
+		def rss =  new XmlSlurper().parse(url)
 		def logtxt = ""
 		rss.channel.item.eachWithIndex{ item, i ->			
 			def titlesrc = item.title.text().split(':')
@@ -41,13 +40,16 @@ class MenuService {
 	
 	def parseGeo(week=0){
 		def logtxt = ""
-		(1..5).each{ n ->
-			def url =  "http://geopolis.sv-group.ch/fr/plan-des-menus.html?addGP%5Bweekday%5D=$n&addGP%5Bweekmod%5D=$week"
+		(0..4).each{ n ->
+			def url =  "http://geopolis.sv-restaurant.ch/fr/plan-des-menus.html?addGP%5Bshift%5D=$n"
 			def html = url.toURL().getText()
 			def match = html =~ /(?s)html-menu"\>(.*)\<\/div\>\<!--/
 			def menu = match[0][1]
 			menu = (menu =~ /(?is)target=".*?"|onclick=".*?"|onfocus=".*?"|<input.*?>|\<g:plusone.*?\<\/g:plusone\>/).replaceAll("")
 			menu = (menu =~ /&([^;]+(?!(?:\\w|;)))/).replaceAll("&amp;${1}")
+			menu = (menu =~ /(?is)<div class="social-network">.*?<\/div>/).replaceAll("")
+			menu = (menu =~ /(?is)<div class="specials-logo-right">.*?<\/div>/).replaceAll("")
+			menu = (menu =~ /(?is)<img.*?>/).replaceAll("")
 			def rss =  new XmlSlurper().parseText(menu)
 			def mdate = rss.div.findAll{ it.@class == 'date' }.toString() =~ /\d{1,2}.\d{1,2}.\d{4}/
 			Date dateServed = new Date().parse("dd.MM.yyyy", mdate[0])
@@ -64,7 +66,7 @@ class MenuService {
 	}
 	
 	def parseCSV(){
-		def servletContext = ApplicationHolder.getApplication().getParentContext().getServletContext()
+		def servletContext = grailsApplication.getParentContext().getServletContext()
 		int i = 0
 		def logtxt = ""
 		servletContext.getResourceAsStream("/WEB-INF/menus.csv").eachCsvLine { tokens ->

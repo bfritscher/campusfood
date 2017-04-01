@@ -12,6 +12,7 @@ class Location implements Comparable {
 	}
 	
 	static mapping = {
+		id generator: 'sequence', params: [sequence: 'location_seq']
 		sort 'name'
 	}
 	

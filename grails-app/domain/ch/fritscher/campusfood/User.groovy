@@ -23,7 +23,9 @@ class User {
 	}
 
 	static mapping = {
+		table '`User`'
 		password column: '`password`'
+		id generator: 'sequence', params: [sequence: 'user_seq']
 	}
 
 	Set<Role> getAuthorities() {
@@ -31,6 +33,6 @@ class User {
 	}
 	
 	String toString(){
-		return username
+		return username ?: 'Person without username'
 	}
 }

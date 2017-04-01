@@ -1,30 +1,51 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <title><g:layoutTitle default="Grails" /></title>
-        <link rel="stylesheet" href="${resource(dir:'css',file:'main.css')}" />
-        <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
-        <g:layoutHead />
-        <g:javascript library="application" />
-        <script type="text/javascript">
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <title>
+        <g:layoutTitle default="Grails"/>
+    </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-36525343-2']);
-  _gaq.push(['_trackPageview']);
+    <asset:stylesheet src="application.css"/>
 
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
+    <g:layoutHead/>
+</head>
+<body>
 
-</script>
-    </head>
-    <body>
-        <div id="spinner" class="spinner" style="display:none;">
-            <img src="${resource(dir:'images',file:'spinner.gif')}" alt="${message(code:'spinner.alt',default:'Loading...')}" />
+    <div class="navbar navbar-default navbar-static-top" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/#">
+                    <i class="fa grails-icon">
+                        <asset:image src="grails-cupsonly-logo-white.svg"/>
+                    </i> Grails
+                </a>
+            </div>
+            <div class="navbar-collapse collapse" aria-expanded="false" style="height: 0.8px;">
+                <ul class="nav navbar-nav navbar-right">
+                    <g:pageProperty name="page.nav" />
+                </ul>
+            </div>
         </div>
-        <div id="grailsLogo"><a href="http://grails.org"><img src="${resource(dir:'images',file:'grails_logo.png')}" alt="Grails" border="0" /></a></div>
-        <g:layoutBody />
-    </body>
+    </div>
+
+    <g:layoutBody/>
+
+    <div class="footer" role="contentinfo"></div>
+
+    <div id="spinner" class="spinner" style="display:none;">
+        <g:message code="spinner.alt" default="Loading&hellip;"/>
+    </div>
+
+    <asset:javascript src="application.js"/>
+
+</body>
 </html>

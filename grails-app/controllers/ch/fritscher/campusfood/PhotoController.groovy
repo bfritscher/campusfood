@@ -1,28 +1,28 @@
 package ch.fritscher.campusfood
 
-import grails.plugins.springsecurity.Secured
+import grails.plugin.springsecurity.annotation.Secured
 
 @Secured(['ROLE_ADMIN'])
 class PhotoController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-    def index = {
+    def index() {
         redirect(action: "list", params: params)
     }
 
-    def list = {
+    def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [photoInstanceList: Photo.list(params), photoInstanceTotal: Photo.count()]
     }
 
-    def create = {
+    def create() {
         def photoInstance = new Photo()
         photoInstance.properties = params
         return [photoInstance: photoInstance]
     }
 
-    def save = {
+    def save() {
         def photoInstance = new Photo(params)
         if (photoInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'photo.label', default: 'Photo'), photoInstance.id])}"
@@ -33,7 +33,7 @@ class PhotoController {
         }
     }
 
-    def show = {
+    def show() {
         def photoInstance = Photo.get(params.id)
         if (!photoInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'photo.label', default: 'Photo'), params.id])}"
@@ -44,7 +44,7 @@ class PhotoController {
         }
     }
 
-    def edit = {
+    def edit() {
         def photoInstance = Photo.get(params.id)
         if (!photoInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'photo.label', default: 'Photo'), params.id])}"
@@ -55,7 +55,7 @@ class PhotoController {
         }
     }
 
-    def update = {
+    def update() {
         def photoInstance = Photo.get(params.id)
         if (photoInstance) {
             if (params.version) {
@@ -82,7 +82,7 @@ class PhotoController {
         }
     }
 
-    def delete = {
+    def delete() {
         def photoInstance = Photo.get(params.id)
         if (photoInstance) {
             try {

@@ -1,35 +1,35 @@
 package ch.fritscher.campusfood
 
-import grails.plugins.springsecurity.Secured
+import grails.plugin.springsecurity.annotation.Secured
 
 class TagController {
 
     static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
 
-    def index = {
+    def index() {
         redirect(action: "list", params: params)
     }
 
-    def list = {
+    def list() {
         params.max = Math.min(params.max ? params.int('max') : 10, 100)
         [tagInstanceList: Tag.list(params), tagInstanceTotal: Tag.count()]
     }
 	
-	def cloud = {
+	def cloud() {
 		def tags = [:]
 		Tag.executeQuery("SELECT t.name, size(t.meals) FROM Tag t GROUP BY t.name").each{ tags << (it as MapEntry) }
 		[tags:tags]
 	}
 
 	@Secured(['ROLE_USER'])
-    def create = {
+    def create() {
         def tagInstance = new Tag()
         tagInstance.properties = params
         return [tagInstance: tagInstance]
     }
 
 	@Secured(['ROLE_USER'])
-    def save = {
+    def save() {
         def tagInstance = new Tag(params)
         if (tagInstance.save(flush: true)) {
             flash.message = "${message(code: 'default.created.message', args: [message(code: 'tag.label', default: 'Tag'), tagInstance.id])}"
@@ -40,7 +40,7 @@ class TagController {
         }
     }
 
-    def show = {
+    def show() {
 		def tagInstance
 		if(params.id.isNumber()){
 			tagInstance = Tag.get(params.id)
@@ -57,7 +57,7 @@ class TagController {
     }
 
 	@Secured(['ROLE_ADMIN'])
-    def edit = {
+    def edit() {
         def tagInstance = Tag.get(params.id)
         if (!tagInstance) {
             flash.message = "${message(code: 'default.not.found.message', args: [message(code: 'tag.label', default: 'Tag'), params.id])}"
@@ -69,7 +69,7 @@ class TagController {
     }
 
 	@Secured(['ROLE_ADMIN'])
-    def update = {
+    def update() {
         def tagInstance = Tag.get(params.id)
         if (tagInstance) {
             if (params.version) {
@@ -97,7 +97,7 @@ class TagController {
     }
 
 	@Secured(['ROLE_ADMIN'])
-    def delete = {
+    def delete() {
         def tagInstance = Tag.get(params.id)
         if (tagInstance) {
             try {

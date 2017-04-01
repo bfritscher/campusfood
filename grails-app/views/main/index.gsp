@@ -2,11 +2,11 @@
     <head>
         <title>CampusFood</title>
         <meta name="layout" content="campusfood" />
-        <link rel="stylesheet" href="${resource(dir:'css',file:'jdpicker.css')}" type="text/css"/>
-        <g:javascript src="jquery.jdpicker.js" />
-        <link rel="stylesheet" href="${resource(dir:'css',file:'fg.menu.css')}" type="text/css"/>
-		<link rel="stylesheet" href="${resource(dir:'css/custom-theme',file:'jquery-ui-1.8.10.custom.css')}" type="text/css"/>
-        <g:javascript src="fg.menu.js" />
+		<asset:stylesheet src="jdpicker.css"/>
+		<asset:javascript src="jquery.jdpicker.js"/>
+		<asset:stylesheet src="fg.menu.css"/>
+		<asset:stylesheet src="custom-theme/jquery-ui-1.8.10.custom.css"/>
+		<asset:javascript src="fg.menu.js"/>
         <script type="text/javascript">
         $(document).ready(function(){
 			var menu = $('#hierarchybreadcrumb').menu({

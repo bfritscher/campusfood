@@ -7,6 +7,7 @@ class Role {
 
 	static mapping = {
 		cache true
+		id generator: 'sequence', params: [sequence: 'role_seq']
 	}
 
 	static constraints = {

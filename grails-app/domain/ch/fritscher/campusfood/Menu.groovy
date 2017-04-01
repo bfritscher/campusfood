@@ -10,6 +10,10 @@ class Menu {
     static constraints = {
 		name unique: 'location'
     }
+
+	static mapping = {
+		id generator: 'sequence', params: [sequence: 'menu_seq']
+	}
 	
 	String toString(){
 		return "${location} - ${name}"		
