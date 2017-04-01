@@ -28,4 +28,4 @@ RUN grails dependency-report
 
 EXPOSE 8080
 # Set Default Behavior
-ENTRYPOINT ["grails prod run-app"]
+ENTRYPOINT ["grails"]
