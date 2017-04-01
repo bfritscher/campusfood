@@ -17,6 +17,7 @@ ENV PATH $GRAILS_HOME/bin:$PATH
 
 # Create App Directory
 RUN mkdir /app
+COPY . /app
 
 # Set Workdir
 WORKDIR /app
@@ -25,5 +26,6 @@ WORKDIR /app
 # create unnecessary build files or artifacts.
 RUN grails dependency-report
 
+EXPOSE 8080
 # Set Default Behavior
-ENTRYPOINT ["grails"]
+ENTRYPOINT ["grails prod run-app"]
