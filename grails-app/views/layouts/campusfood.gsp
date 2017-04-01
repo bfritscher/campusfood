@@ -5,8 +5,7 @@
 		<asset:stylesheet src="campusfood.css"/>
         <link rel="shortcut icon" href="${resource(dir:'images',file:'favicon.ico')}" type="image/x-icon" />
         <script type="text/javascript">
-			var baseURL = '${resource(dir:'/', absolute:true)}';
-            baseURL = baseURL.substring(0, baseURL.length - 7);
+			var baseURL = '/';
         </script>
 		<asset:javascript src="jquery-2.2.0.min.js"/>
 		<asset:javascript src="jquery-migrate-1.4.1.min.js"/>
@@ -16,7 +15,7 @@
 			#wrap {display:table;height:100%}
 		</style>
 		<![endif]-->
-		
+
 		<g:layoutHead />
         <script type="text/javascript">
 
@@ -61,7 +60,7 @@
 						<g:link controller="login" action="auth">Se connecter</g:link>
 					</sec:ifNotLoggedIn>
 						<br class="clear"/>
-					</div>				
+					</div>
 					<h1><g:link controller="main" action="index">Campus Food</g:link></h1>
 					<div class="nav">
 						<g:link controller="android" action="index">Application Android</g:link>
